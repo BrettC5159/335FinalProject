@@ -27,12 +27,17 @@ h2 {
     justify-content: center;
 }
 
+#content_center {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
 #radio_center {
     display: flex;
     justify-content: center;
 }
 
-#button_center {
+.button_center {
     display: flex;
     justify-content: center;
 }
@@ -47,8 +52,7 @@ h2 {
     padding-right: 12px;
     border-radius: 12px;
     background: linear-gradient(145deg, #65ac80, #78cc98);
-    box-shadow:  6px 6px 12px #5fa279,
-                -6px -6px 12px #81dca3;
+    box-shadow:  6px 6px 12px #5fa279, -6px -6px 12px #81dca3;
 }
 
 .buttons {
