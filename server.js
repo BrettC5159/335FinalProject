@@ -3,14 +3,20 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser')
+const querystring = require('querystring');
+const cors = require('cors');
+const cookieParser = require('cookie-parser');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const portNumber = 5000;
+const redirect_uri = `http://localhost:5000/callback`;
+const stateKey = 'spotify_auth_state';
 
 require('dotenv').config({path: path.resolve(__dirname, '.env')});
 const username = process.env.MONGO_DB_USERNAME;
 const password = process.env.MONGO_DB_PASSWORD;
 const database = process.env.MONGO_DB_NAME;
 const mongoCollection = process.env.MONGO_COLLECTION;
+const spotifyClientId = process.env.SPOTIFY_CLIENT_ID;
 
 // Setup web server
 const webServer = http.createServer();
@@ -57,3 +63,36 @@ async function connectMongo() {
   }
 }
 connectMongo().catch(console.error);
+
+function getRandomString(length) {
+  var text = '';
+  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+  for (var i = 0; i < length; i++) {
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+  return text;
+}
+
+app.use(cookieParser())
+  .use(cors());
+
+app.get('/login', (req, res) => {
+  let state = getRandomString(16);
+  res.cookie(stateKey, state);
+
+  const scope = 'user-read-private user-read-email';
+  res.redirect('https://accounts.spotify.com/authorize?' + 
+    querystring.stringify({
+      response_type: 'code',
+      client_id: spotifyClientId,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state
+    }));
+
+});
+
+app.get('/callback', (req, res) => {
+  res.end('Logged in!');
+});
