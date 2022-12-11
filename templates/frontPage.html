@@ -1,0 +1,31 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>UMD's Favorite Songs</title>
+        <link rel="stylesheet" href="style.css" type="text/css">
+    </head>
+
+    <body>
+        <h1>UMD's Favorite Songs</h1>
+        <h2>Data submission</h2>
+
+        <form>
+            Name: <input type="text" name="name" required autofocus>
+            UID: <input type="text" name="uid" minlength="9" maxlength="9" required>
+            
+            <br>
+            <input type="radio" id="four_months" name="four_months" value="Four Months">
+            <label for="four_months">Four months</label>
+            <input type="radio" id="six_months" name="six_months" value="Six Months">
+            <label for="six_months">Six months</label>
+            <input type="radio" id="all_time" name="all_time" value="All Time">
+            <label for="all_time">All time</label>
+            
+            <br>
+            <input type="submit" value="Add songs!">
+            <input type="reset" value="Reset">
+        </form>
+
+        <hr>
+    </body>
+</html>
