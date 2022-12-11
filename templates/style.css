@@ -1,0 +1,28 @@
+html {
+    font-family: 'Bebas Neue';
+    font-size: 22px;
+}
+
+body {
+    background: rgb(34,193,195);
+    background: linear-gradient(0deg, rgba(34,193,195,1) 8%, rgba(253,187,45,1) 100%);
+}
+
+h1 {
+    font-size: 50px;
+    color: white;
+    font-style: italic;
+    text-align: center;
+}
+
+h2 {
+    font-size: 40px;
+    color: white;
+    font-style: italic;
+    text-align: center;
+}
+
+#form_center {
+    display: flex;
+    justify-content: center;
+}

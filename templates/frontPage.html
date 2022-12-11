@@ -3,28 +3,32 @@
         <meta charset="utf-8">
         <title>UMD's Favorite Songs</title>
         <link rel="stylesheet" href="style.css" type="text/css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap">
+        <link rel="icon" href="https://content.sportslogos.net/logos/32/743/full/maryland_terrapins_logo_secondary_1988_sportslogosnet-9986.png">
     </head>
 
     <body>
         <h1>UMD's Favorite Songs</h1>
         <h2>Data submission</h2>
 
+        <div id="form_center">
         <form>
             Name: <input type="text" name="name" required autofocus>
             UID: <input type="text" name="uid" minlength="9" maxlength="9" required>
             
             <br>
-            <input type="radio" id="four_months" name="four_months" value="Four Months">
+            <input type="radio" id="four_months" name="period" value="Four Months">
             <label for="four_months">Four months</label>
-            <input type="radio" id="six_months" name="six_months" value="Six Months">
+            <input type="radio" id="six_months" name="period" value="Six Months">
             <label for="six_months">Six months</label>
-            <input type="radio" id="all_time" name="all_time" value="All Time">
+            <input type="radio" id="all_time" name="period" value="All Time">
             <label for="all_time">All time</label>
             
             <br>
             <input type="submit" value="Add songs!">
             <input type="reset" value="Reset">
         </form>
+        </div>
 
         <hr>
     </body>
