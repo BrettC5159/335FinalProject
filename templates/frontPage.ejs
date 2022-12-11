@@ -1,0 +1,68 @@
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>UMD's Favorite Songs</title>
+        <link rel="stylesheet" href="style.css" type="text/css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Bebas+Neue&display=swap">
+        <link rel="icon" href="https://content.sportslogos.net/logos/32/743/full/maryland_terrapins_logo_secondary_1988_sportslogosnet-9986.png">
+
+        <script type="text/javascript" defer>
+            /*
+                Function to verify data before submission.
+                Currently, it makes sure the UID is a nine-digit number.
+                However, it can easily be expanded to support more data validation.
+            */
+            function formConfirm() {
+                //Define pattern for valid UIDs and get the UID from the form
+                const ID_PATTERN = /^\d{9}$/;
+                const userUid = document.getElementById("uid").value;
+
+                //Make sure the UID is valid and that the user wants to submit the form.
+                if(userUid.match(ID_PATTERN) && confirm("Are you sure you want to submit?")) {
+                    document.getElementById("data_form").submit();
+                } else {
+                    return;
+                }
+            }
+        </script>
+    </head>
+
+    <body>
+        <h1>UMD's Favorite Songs</h1>
+        <h2>Data submission</h2>
+
+        <div id="form_center">
+            <form id="data_form">
+                Name: <input class="text_input" type="text" name="name" required autofocus>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                UID: <input class="text_input" type="text" name="uid" id="uid" placeholder="123456789" maxlength="9" value="" required>
+
+                <br>
+                <br>
+                <div id="radio_center">
+                    <input type="radio" id="four_months" name="period" value="Four Months">
+                    <label for="four_months">Four months</label>
+                    <input type="radio" id="six_months" name="period" value="Six Months" checked>
+                    <label for="six_months">Six months</label>
+                    <input type="radio" id="all_time" name="period" value="All Time">
+                    <label for="all_time">All time</label>
+                </div>
+
+                <br>
+                <div id="button_center">
+                    <input class="buttons" type="button" value="Add songs!" onclick="formConfirm()">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input class="buttons" type="reset" value="Reset">
+                </div>
+            </form>
+        </div>
+
+        <div id="footer">
+            <p>
+                Made by 
+                <a href="https://www.linkedin.com/in/brettcaplan/" target="_blank">Brett Caplan</a> and 
+                <a href="https://www.linkedin.com/in/cedric-prentice/" target="_blank">Cedric Prentice</a>
+            </p>
+        </div>
+    </body>
+</html>
