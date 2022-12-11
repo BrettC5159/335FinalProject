@@ -92,7 +92,6 @@ app.use(cookieParser())
 
 app.post('/login', (req, res) => {
   period = req.body.period;
-  console.log(period);
 
   let state = getRandomString(16);
   res.cookie(stateKey, state);
@@ -133,14 +132,35 @@ app.get('/callback', async (req, res) => {
 
 app.get('/gathersongs', async (req, res) => {
   console.log('Getting your top songs...')
+
+  let time_range;
+
+  switch (period) {
+    case "Four Months":
+      time_range="short_term";
+      break;
+    case "Six Months":
+      time_range="medium_term";
+      break;
+    case "All Time":
+      time_range="long_term";
+      break;
+  }
+
   const topSongsRawData = await axios.get(
-    "https://api.spotify.com/v1/me/top/tracks?limit=50", 
+    `${spotify_uri}me/top/tracks?limit=50&time_range=${time_range}`, 
     {
       headers: {
         Authorization: "Bearer " + accesstoken,
         'Content-Type': 'application/json'
     }});
 
-    
+  console.log('Uploading top songs to db...')
+  let topSongURIs = []
+  for (const song of topSongsRawData.data.items) {
+    topSongURIs.push({ song_uri: song.uri });
+  }
 
+  await client.db(database).collection(mongoCollection).insertMany(topSongURIs);
+  console.log('Songs uploaded to mongodb!');
 });
