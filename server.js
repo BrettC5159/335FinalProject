@@ -5,6 +5,7 @@ const path = require('path');
 const bodyParser = require('body-parser')
 const querystring = require('querystring');
 const cors = require('cors');
+const ejs = require('ejs');
 const cookieParser = require('cookie-parser');
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const portNumber = 5000;
@@ -44,8 +45,8 @@ process.stdin.on('readable', () => {
 });
 
 // Setup express
-// app.set('views', path.resolve(__dirname, "templates"));
-// app.set('view engine', 'ejs');
+app.set('views', path.resolve(__dirname, "templates"));
+app.set('view engine', 'ejs');
 app.listen(portNumber);
 app.use(bodyParser.urlencoded({extended: false}));
 
@@ -74,10 +75,17 @@ function getRandomString(length) {
   return text;
 }
 
+app.get('/', (req, res) => {
+  res.render('frontPage');
+});
+
 app.use(cookieParser())
   .use(cors());
 
-app.get('/login', (req, res) => {
+app.post('/login', (req, res) => {
+  let period = req.body.period;
+  console.log(period);
+
   let state = getRandomString(16);
   res.cookie(stateKey, state);
 
