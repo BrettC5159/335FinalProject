@@ -96,7 +96,7 @@ app.post('/login', (req, res) => {
   let state = getRandomString(16);
   res.cookie(stateKey, state);
 
-  const scope = 'user-top-read';
+  const scope = 'user-top-read playlist-modify-public playlist-modify-private';
   res.redirect('https://accounts.spotify.com/authorize?' + 
     querystring.stringify({
       response_type: 'code',
@@ -163,4 +163,35 @@ app.get('/gathersongs', async (req, res) => {
 
   await client.db(database).collection(mongoCollection).insertMany(topSongURIs);
   console.log('Songs uploaded to mongodb!');
+
+  console.log('Getting account info...');
+  const userAccountInfo = await axios.get(
+    `${spotify_uri}me`,
+    {
+      headers: {
+        Authorization: "Bearer " + accesstoken,
+        'Content-Type': 'application/json'
+      }});
+
+
+  const userId = userAccountInfo.data.id;
+  console.log(userId);
+
+  console.log('Creating playlist...');
+
+  let playlistRes = await axios({
+    method: 'POST',
+    url: `${spotify_uri}users/${userId}/playlists`,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accesstoken
+    },
+    data: {
+      name: "Terps Top 50",
+      description: "UMD students top 50 songs from listener data."
+    }
+  });
+
+  console.log(playlistRes);
 });
