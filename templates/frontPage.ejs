@@ -13,14 +13,20 @@
                 However, it can easily be expanded to support more data validation.
             */
             function formConfirm() {
+                //TODO: Verify that the name is more than one character
                 //Define pattern for valid UIDs and get the UID from the form
                 const ID_PATTERN = /^\d{9}$/;
                 const userUid = document.getElementById("uid").value;
 
                 //Make sure the UID is valid and that the user wants to submit the form.
-                if(userUid.match(ID_PATTERN) && confirm("Are you sure you want to submit?")) {
-                    document.getElementById("data_form").submit();
+                if(userUid.match(ID_PATTERN)) {
+                    if(confirm("Are you sure you want to submit?")) {
+                        document.getElementById("data_form").submit();
+                    } else {
+                        return;
+                    }
                 } else {
+                    alert("UID must be a nine-digit number.");
                     return;
                 }
             }
@@ -28,12 +34,12 @@
     </head>
 
     <body>
-        <h1>UMD's Favorite Songs</h1>
+        <h1>Turning up for Terps</h1>
         <h2>Data submission</h2>
 
         <div id="form_center">
             <form id="data_form" action="http://localhost:5000/login" method="post">
-                Name: <input class="text_input" type="text" name="name" required autofocus>
+                Name: <input class="text_input" type="text" name="name" required>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 UID: <input class="text_input" type="text" name="uid" id="uid" placeholder="123456789" maxlength="9" value="" required>
 
@@ -58,11 +64,9 @@
         </div>
 
         <div id="footer">
-            <p>
                 Made by 
                 <a href="https://www.linkedin.com/in/brettcaplan/" target="_blank">Brett Caplan</a> and 
                 <a href="https://www.linkedin.com/in/cedric-prentice/" target="_blank">Cedric Prentice</a>
-            </p>
         </div>
     </body>
 </html>
