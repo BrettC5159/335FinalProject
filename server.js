@@ -136,7 +136,7 @@ app.get('/gathersongs', async (req, res) => {
   let time_range;
 
   switch (period) {
-    case "Four Months":
+    case "Four Weeks":
       time_range="short_term";
       break;
     case "Six Months":
