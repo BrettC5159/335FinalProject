@@ -96,7 +96,7 @@ app.post('/login', (req, res) => {
   let state = getRandomString(16);
   res.cookie(stateKey, state);
 
-  const scope = 'user-top-read';
+  const scope = 'user-top-read playlist-modify-public playlist-modify-private';
   res.redirect('https://accounts.spotify.com/authorize?' + 
     querystring.stringify({
       response_type: 'code',
@@ -163,4 +163,66 @@ app.get('/gathersongs', async (req, res) => {
 
   await client.db(database).collection(mongoCollection).insertMany(topSongURIs);
   console.log('Songs uploaded to mongodb!');
+
+  console.log('Getting account info...');
+  const userAccountInfo = await axios.get(
+    `${spotify_uri}me`,
+    {
+      headers: {
+        Authorization: "Bearer " + accesstoken,
+        'Content-Type': 'application/json'
+      }});
+
+
+  const userId = userAccountInfo.data.id;
+  console.log(userId);
+
+  console.log('Creating playlist...');
+
+  let playlistRes = await axios({
+    method: 'POST',
+    url: `${spotify_uri}users/${userId}/playlists`,
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accesstoken
+    },
+    data: {
+      name: "Terps Top 50",
+      description: "UMD students top 50 songs from listener data."
+    }
+  });
+  
+  const playlistId = playlistRes.data.id;
+  console.log('Getting up to date top user songs...');
+
+  const aggCursor = client.db(database).collection(mongoCollection)
+    .aggregate([
+      { $group: { _id: "$song_uri", count: {$sum: 1}}},
+      { $sort: {count: -1}},
+      { $limit: 50},
+      { $project: { "_id": 1}}
+  ]);
+
+  let songIdentifiers = []
+
+  for await (const song of aggCursor) {
+    songIdentifiers.push(song._id);
+  }
+
+  console.log('Adding all songs to your playlist...');
+  console.log(songIdentifiers.join(','));
+
+  axios({
+    method: 'POST',
+    url: `${spotify_uri}playlists/${playlistId}/tracks`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accesstoken
+    },
+    data: {
+      uris: songIdentifiers,
+      position: 0,
+    }
+  })
 });
