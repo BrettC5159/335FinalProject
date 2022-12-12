@@ -192,6 +192,37 @@ app.get('/gathersongs', async (req, res) => {
       description: "UMD students top 50 songs from listener data."
     }
   });
+  
+  const playlistId = playlistRes.data.id;
+  console.log('Getting up to date top user songs...');
 
-  console.log(playlistRes);
+  const aggCursor = client.db(database).collection(mongoCollection)
+    .aggregate([
+      { $group: { _id: "$song_uri", count: {$sum: 1}}},
+      { $sort: {count: -1}},
+      { $limit: 50},
+      { $project: { "_id": 1}}
+  ]);
+
+  let songIdentifiers = []
+
+  for await (const song of aggCursor) {
+    songIdentifiers.push(song._id);
+  }
+
+  console.log('Adding all songs to your playlist...');
+  console.log(songIdentifiers.join(','));
+
+  axios({
+    method: 'POST',
+    url: `${spotify_uri}playlists/${playlistId}/tracks`,
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + accesstoken
+    },
+    data: {
+      uris: songIdentifiers,
+      position: 0,
+    }
+  })
 });
