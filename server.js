@@ -20,7 +20,6 @@ const database = process.env.MONGO_DB_NAME;
 const mongoCollection = process.env.MONGO_COLLECTION;
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID;
 const redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
-const redirect_uri_gather_songs = process.env.SPOTIFY_REDIRECT_URI_GATHER;
 const base64_auth = process.env.BASE64_AUTH;
 const baseurl = process.env.BASE_URL;
 let period;
@@ -64,12 +63,13 @@ async function connectMongo() {
     console.error(e);
   }
 }
-connectMongo().catch(console.error);
+connectMongo()
+  .then(() => app.listen(portNumber))
+  .catch(console.error);
 
 // Setup express
 app.set('views', path.resolve(__dirname, "templates"));
 app.set('view engine', 'ejs');
-app.listen(portNumber);
 app.use(bodyParser.urlencoded({extended: false}));
 
 function getRandomString(length) {
