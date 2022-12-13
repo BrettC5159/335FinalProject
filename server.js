@@ -50,12 +50,6 @@ process.stdin.on('readable', () => {
   }
 });
 
-// Setup express
-app.set('views', path.resolve(__dirname, "templates"));
-app.set('view engine', 'ejs');
-app.listen(portNumber);
-app.use(bodyParser.urlencoded({extended: false}));
-
 // Setup Mongo
 let client;
 
@@ -70,6 +64,12 @@ async function connectMongo() {
   }
 }
 connectMongo().catch(console.error);
+
+// Setup express
+app.set('views', path.resolve(__dirname, "templates"));
+app.set('view engine', 'ejs');
+app.listen(portNumber);
+app.use(bodyParser.urlencoded({extended: false}));
 
 function getRandomString(length) {
   var text = '';
