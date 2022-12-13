@@ -33,7 +33,7 @@ process.stdin.setEncoding('utf-8');
 console.log(`Web started and running at http://localhost:${portNumber}`)
 console.log(`Stop to shutdown the server: `);
 
-// Process stdin events :)
+// Process stdin events
 process.stdin.on('readable', () => {
   let input;
   while ((input = process.stdin.read()) !== null) {
@@ -194,6 +194,10 @@ app.get('/gathersongs', async (req, res) => {
   });
   
   const playlistId = playlistRes.data.id;
+  const playlistUrl = playlistRes.data.external_urls.spotify;
+
+
+
   console.log('Getting up to date top user songs...');
 
   const aggCursor = client.db(database).collection(mongoCollection)
@@ -211,9 +215,8 @@ app.get('/gathersongs', async (req, res) => {
   }
 
   console.log('Adding all songs to your playlist...');
-  console.log(songIdentifiers.join(','));
 
-  axios({
+  await axios({
     method: 'POST',
     url: `${spotify_uri}playlists/${playlistId}/tracks`,
     headers: {
@@ -225,4 +228,16 @@ app.get('/gathersongs', async (req, res) => {
       position: 0,
     }
   })
+
+  console.log('All playlists posted! Displaying playlist now...');
+
+  let playlistEmbedUrl = 
+  `https://open.spotify.com/embed/playlist/${playlistUrl.split('/')[4].split('?')[0]}?utm_source=generator`
+  
+  const variables = {
+    name: userAccountInfo.data.display_name,
+    playlist: playlistEmbedUrl
+  }
+
+  res.render('resultPage.ejs', variables);
 });
