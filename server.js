@@ -83,8 +83,12 @@ function getRandomString(length) {
 }
 
 // Front page form endpoint
-app.get(`${baseurl}/`, (req, res) => {
-  res.render('frontPage');
+app.get(`/`, (req, res) => {
+  variables = {
+    submitURL: `${baseurl}:${portNumber}/login`
+  }
+
+  res.render('frontPage', variables);
 });
 
 app.use(cookieParser())
@@ -93,7 +97,7 @@ app.use(cookieParser())
 
 
 // Prompt to login to spotify account
-app.post(`${baseurl}/login`, (req, res) => {
+app.post(`/login`, (req, res) => {
   period = req.body.period;
 
   let state = getRandomString(16);
@@ -112,7 +116,7 @@ app.post(`${baseurl}/login`, (req, res) => {
 });
 
 // Call back once logged into spotify account
-app.get(`${baseurl}/callback`, async (req, res) => {
+app.get(`/callback`, async (req, res) => {
 
   // Authorize signed in user with API. Retrieve accesstoken that can be used in all later requests.
   console.log('Doing some authorization and setup...');
