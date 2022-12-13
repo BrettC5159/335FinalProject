@@ -100,12 +100,12 @@ input[type="radio"] {
     box-shadow: inset 6px 6px 12px #1da4a6, inset -6px -6px 12px #27dee0;
 }
 
-.buttons:active {
+/*.buttons:active {
     border-radius: 12px;
     color: #c0c0c0;
     background: #22c1c3;
     box-shadow: inset 6px 6px 12px #1da4a6, inset -6px -6px 12px #27dee0;
-}
+}*/
 
 #footer {
     position: fixed;
