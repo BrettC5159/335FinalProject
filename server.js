@@ -9,7 +9,7 @@ const cors = require('cors');
 const ejs = require('ejs');
 const cookieParser = require('cookie-parser');
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const portNumber = 5000;
+const portNumber = process.env.PORT || 5000;
 const stateKey = 'spotify_auth_state';
 const spotify_uri = 'https://api.spotify.com/v1/';
 
