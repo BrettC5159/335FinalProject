@@ -29,7 +29,7 @@ let accesstoken;
 const webServer = http.createServer();
 process.stdin.setEncoding('utf-8');
 
-console.log(`Web started and running at http://localhost:${portNumber}`)
+console.log(`Web started and running at http://localhost:${portNumber}`);
 console.log(`Stop to shutdown the server: `);
 
 // Process stdin events
@@ -154,9 +154,9 @@ app.get('/callback', async (req, res) => {
       'Content-Type': 'application/json'
   }});
 
-  // Upload user top song data to Mongo
-  console.log('Uploading top songs to db...')
-  let topSongURIs = []
+  // Upload top user songs to db
+  console.log('Uploading top songs to db...');
+  let topSongURIs = [];
   for (const song of topSongsRawData.data.items) {
     topSongURIs.push({ song_uri: song.uri });
   }
@@ -204,7 +204,8 @@ app.get('/callback', async (req, res) => {
       { $limit: 50},
       { $project: { "_id": 1}}
   ]);
-  let songIdentifiers = []
+
+  let songIdentifiers = [];
 
   for await (const song of aggCursor) {
     songIdentifiers.push(song._id);
@@ -224,7 +225,8 @@ app.get('/callback', async (req, res) => {
       uris: songIdentifiers,
       position: 0,
     }
-  })
+  });
+
   console.log('All playlists posted! Displaying playlist now...');
 
   let playlistEmbedUrl = 
@@ -233,7 +235,7 @@ app.get('/callback', async (req, res) => {
   const variables = {
     name: userAccountInfo.data.display_name,
     playlist: playlistEmbedUrl
-  }
+  };
 
   res.render('resultPage.ejs', variables);
   res.end();
