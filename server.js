@@ -21,7 +21,12 @@ const mongoCollection = process.env.MONGO_COLLECTION;
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID;
 const redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
 const base64_auth = process.env.BASE64_AUTH;
-const baseurl = `${process.env.BASE_URL}:${portNumber}`;
+let baseurl = `${process.env.BASE_URL}`;
+
+if (baseurl == "http://localhost") {
+  baseurl += `:${portNumber}`;
+}
+
 let period;
 let accesstoken;
 
