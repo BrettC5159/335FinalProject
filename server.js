@@ -82,6 +82,7 @@ function getRandomString(length) {
   return text;
 }
 
+// Front page form endpoint
 app.get('/', (req, res) => {
   res.render('frontPage');
 });
@@ -90,6 +91,8 @@ app.use(cookieParser())
   .use(cors())
   .use(express.static(__dirname + '/templates'));
 
+
+// Prompt to login to spotify account
 app.post('/login', (req, res) => {
   period = req.body.period;
 
@@ -108,9 +111,11 @@ app.post('/login', (req, res) => {
 
 });
 
+// Call back once logged into spotify account
 app.get('/callback', async (req, res) => {
-  console.log('Doing some authorization and setup...');
 
+  // Authorize signed in user with API. Retrieve accesstoken that can be used in all later requests.
+  console.log('Doing some authorization and setup...');
   const spotifyResponse = await axios.post(
     'https://accounts.spotify.com/api/token',
     querystring.stringify({
@@ -125,16 +130,11 @@ app.get('/callback', async (req, res) => {
       }
     }
   );
-
   accesstoken = spotifyResponse.data.access_token;
-  res.redirect('/gathersongs')
-});
 
-app.get('/gathersongs', async (req, res) => {
+  // Get top songs from user's spotify listening history
   console.log('Getting your top songs...')
-
   let time_range;
-
   switch (period) {
     case "Four Weeks":
       time_range="short_term";
@@ -148,22 +148,23 @@ app.get('/gathersongs', async (req, res) => {
   }
 
   const topSongsRawData = await axios.get(
-    `${spotify_uri}me/top/tracks?limit=50&time_range=${time_range}`, 
-    {
-      headers: {
-        Authorization: "Bearer " + accesstoken,
-        'Content-Type': 'application/json'
-    }});
+  `${spotify_uri}me/top/tracks?limit=50&time_range=${time_range}`, 
+  {
+    headers: {
+      Authorization: "Bearer " + accesstoken,
+      'Content-Type': 'application/json'
+  }});
 
+  // Upload user top song data to Mongo
   console.log('Uploading top songs to db...')
   let topSongURIs = []
   for (const song of topSongsRawData.data.items) {
     topSongURIs.push({ song_uri: song.uri });
   }
-
   await client.db(database).collection(mongoCollection).insertMany(topSongURIs);
   console.log('Songs uploaded to mongodb!');
 
+  // Get more general user account info, preparation for playlist creation
   console.log('Getting account info...');
   const userAccountInfo = await axios.get(
     `${spotify_uri}me`,
@@ -173,12 +174,11 @@ app.get('/gathersongs', async (req, res) => {
         'Content-Type': 'application/json'
       }});
 
-
   const userId = userAccountInfo.data.id;
   console.log(userId);
 
+  // Create new empty playlist in user account
   console.log('Creating playlist...');
-
   let playlistRes = await axios({
     method: 'POST',
     url: `${spotify_uri}users/${userId}/playlists`,
@@ -192,12 +192,10 @@ app.get('/gathersongs', async (req, res) => {
       description: "UMD students top 50 songs from listener data."
     }
   });
-  
   const playlistId = playlistRes.data.id;
   const playlistUrl = playlistRes.data.external_urls.spotify;
 
-
-
+  // From MongoDB get top songs of all users who have contributed data
   console.log('Getting up to date top user songs...');
 
   const aggCursor = client.db(database).collection(mongoCollection)
@@ -207,13 +205,13 @@ app.get('/gathersongs', async (req, res) => {
       { $limit: 50},
       { $project: { "_id": 1}}
   ]);
-
   let songIdentifiers = []
 
   for await (const song of aggCursor) {
     songIdentifiers.push(song._id);
   }
 
+  // Add top songs to playlist
   console.log('Adding all songs to your playlist...');
 
   await axios({
@@ -228,7 +226,6 @@ app.get('/gathersongs', async (req, res) => {
       position: 0,
     }
   })
-
   console.log('All playlists posted! Displaying playlist now...');
 
   let playlistEmbedUrl = 
@@ -240,4 +237,5 @@ app.get('/gathersongs', async (req, res) => {
   }
 
   res.render('resultPage.ejs', variables);
+  res.end();
 });
