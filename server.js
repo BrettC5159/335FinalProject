@@ -22,6 +22,7 @@ const spotifyClientId = process.env.SPOTIFY_CLIENT_ID;
 const redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
 const redirect_uri_gather_songs = process.env.SPOTIFY_REDIRECT_URI_GATHER;
 const base64_auth = process.env.BASE64_AUTH;
+const baseurl = process.env.BASE_URL;
 let period;
 let accesstoken;
 
@@ -82,7 +83,7 @@ function getRandomString(length) {
 }
 
 // Front page form endpoint
-app.get('/', (req, res) => {
+app.get(`${baseurl}/`, (req, res) => {
   res.render('frontPage');
 });
 
@@ -92,7 +93,7 @@ app.use(cookieParser())
 
 
 // Prompt to login to spotify account
-app.post('/login', (req, res) => {
+app.post(`${baseurl}/login`, (req, res) => {
   period = req.body.period;
 
   let state = getRandomString(16);
@@ -111,7 +112,7 @@ app.post('/login', (req, res) => {
 });
 
 // Call back once logged into spotify account
-app.get('/callback', async (req, res) => {
+app.get(`${baseurl}/callback`, async (req, res) => {
 
   // Authorize signed in user with API. Retrieve accesstoken that can be used in all later requests.
   console.log('Doing some authorization and setup...');
