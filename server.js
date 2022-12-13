@@ -21,7 +21,7 @@ const mongoCollection = process.env.MONGO_COLLECTION;
 const spotifyClientId = process.env.SPOTIFY_CLIENT_ID;
 const redirect_uri = process.env.SPOTIFY_REDIRECT_URI;
 const base64_auth = process.env.BASE64_AUTH;
-const baseurl = process.env.BASE_URL;
+const baseurl = `${process.env.BASE_URL}:${portNumber}`;
 let period;
 let accesstoken;
 
@@ -85,7 +85,7 @@ function getRandomString(length) {
 // Front page form endpoint
 app.get(`/`, (req, res) => {
   variables = {
-    submitURL: `${baseurl}:${portNumber}/login`
+    submitURL: `${baseurl}/login`
   }
 
   res.render('frontPage', variables);
