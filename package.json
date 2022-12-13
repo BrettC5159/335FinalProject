@@ -4,8 +4,7 @@
   "description": "Collects spotify data from UMD students, curates up to date top 50 playlist based on listening habits of users. Basically, a US Top 50 just for UMD students that improves in accuracy as listener data is collected",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
