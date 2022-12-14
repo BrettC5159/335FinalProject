@@ -1,15 +1,25 @@
 # 335FinalProject
 
+## Group Members
 - Brett Caplan (bcaplan2, 117126914)
 - Cedric Prentice (cprentic, 117196856)
 
-Note to graders: To use the project, you must log in with the burner Spotify account we created.
+## Note to graders
+
+To use the project, you must log in with the burner Spotify account we created.
 This is because when an app is in development, Spotify only lets it have 25 accounts connected, and
 all the accounts must be manually added. We wanted you guys to be able to add your own music, but
 getting permission/review from Spotify to fully release the app wasn't possible for this project.
 We played some music on the burner account we made, so it can contribute meaningful data 
 (Brett and I also put our Spotify data in). If you are interested in adding your own music, contact us
 and we can get that set up for you.
+
+## Burner Account credentials
+Email: isrhlwykfqibiadksp@tmmcv.net
+
+Password: 335finalprojecttester
+
+Profile name: 335final
 
 ## Description
 
