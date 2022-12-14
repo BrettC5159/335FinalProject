@@ -54,6 +54,7 @@ input[type="radio"] {
 }
 
 .text_input {
+    outline: none;
     height: 36px;
     width: 200px;
     font-size: 18px;
@@ -65,6 +66,18 @@ input[type="radio"] {
     border-radius: 12px;
     background: linear-gradient(145deg, #65ac80, #78cc98);
     box-shadow:  6px 6px 12px #5fa279, -6px -6px 12px #81dca3;
+    /*border-radius: 12px;
+    background: #65ac80;
+    box-shadow: inset 6px 6px 12px #4f8664, inset -6px -6px 12px #7bd29c;*/
+}
+
+.text_input:focus {
+    border-radius: 12px;
+    background: #65ac80;
+    box-shadow: inset 6px 6px 12px #4f8664, inset -6px -6px 12px #7bd29c;
+    /*border-radius: 12px;
+    background: linear-gradient(145deg, #65ac80, #78cc98);
+    box-shadow:  6px 6px 12px #5fa279, -6px -6px 12px #81dca3;*/
 }
 
 .buttons {
@@ -86,6 +99,13 @@ input[type="radio"] {
     background: #22c1c3;
     box-shadow: inset 6px 6px 12px #1da4a6, inset -6px -6px 12px #27dee0;
 }
+
+/*.buttons:active {
+    border-radius: 12px;
+    color: #c0c0c0;
+    background: #22c1c3;
+    box-shadow: inset 6px 6px 12px #1da4a6, inset -6px -6px 12px #27dee0;
+}*/
 
 #footer {
     position: fixed;
