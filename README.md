@@ -21,4 +21,5 @@ We create a Spotify playlist (using the API) with all of the songs.
 ## Links
 - [Use the project!](https://beautiful-overcoat-fox.cyclic.app/)
 - [Spotify web API](https://developer.spotify.com/documentation/web-api/reference/#/)
-- [TODO: Demo video](https://youtube.com)
+- [Accessing the program from the internet](https://youtu.be/kXy9mLxt4BM)
+- [Running the program locally](https://youtu.be/M4g5G926ndM)
